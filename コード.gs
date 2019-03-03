@@ -53,10 +53,7 @@ function CreateDayGraph(){
     
     //昨日の分のデータを探索
     var today0 = new Date(new Date().setHours(0,0,0,0));
-    Logger.log(today0);
-    //一時的に明日に
-    var tomorrow = CalcAfterNDay(today0, 1);
-    Logger.log(tomorrow);
+    
     var yesterday0 = CalcAfterNDay(today0, -1);
     [FirstValueIndex, LastValueIndex] = SearchBetweenDays(list, yesterday0, today0);
     
@@ -108,17 +105,9 @@ function RemoveLastWeekValue(thismonday0){
     var list = listrange.getValues();
     
     [first, last] = SearchBetweenDays(list, lastmonday0, thismonday0);
-    Logger.log("first: ");
-    Logger.log(first);
-    Logger.log(" last: ");
-    Logger.log(last);
-    Logger.log(list.length);
+    
     var lastweekdata = list.splice(0, last + 1);
-    Logger.log(lastweekdata);
-    Logger.log(list.length);
     sheet.deleteRows(2, lastweekdata.length);
-    //listrange.clearContent();
-    //sheet.getRange(2, 1, list.length + 1, 4).setValue(list);
     
     
     ExportCSV(lastweekdata, lastmonday0);
@@ -126,7 +115,6 @@ function RemoveLastWeekValue(thismonday0){
 
 function GetConditionList(){
     var list = GetConditionListRange().getValues();
-    Logger.log(list);
     
     return list;
 }
@@ -163,8 +151,7 @@ function ExportCSV(data, date){
         DriveApp.getFolderById(folderid)
                 .createFile(blob);
     }
-    catch(e)
-    {
+    catch(e){
         Logger.log(e);
     }
 }
@@ -181,10 +168,6 @@ function CreateCSV(data){
 
 function GetSheet(){
     return SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("remo_sheetid")).getSheetByName("records");
-}
-
-function Hoge(){
-    RemoveLastWeekValue(new Date(2019, 2, 3, 0, 0));
 }
 
 
