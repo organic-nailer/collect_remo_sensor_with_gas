@@ -85,7 +85,8 @@ function SaveChartToDrive(chart, date){
     }
 }
 
-function RemoveAllCharts(sheet){
+function RemoveAllCharts(){
+    var sheet = GetSheet();
     var charts = sheet.getCharts();
     
     for(var i = 0; i < charts.length; i++){
@@ -97,7 +98,8 @@ function CalcAfterNDay(date, NumberofDays){
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() + NumberofDays);
 }
 
-function RemoveLastWeekValue(thismonday0){
+function RemoveLastWeekValue(){
+    var thismonday0 = new Date(new Date().setHours(0,0,0,0));
     var sheet = GetSheet();
     var lastmonday0 = CalcAfterNDay(thismonday0, -7);
     
@@ -107,6 +109,9 @@ function RemoveLastWeekValue(thismonday0){
     [first, last] = SearchBetweenDays(list, lastmonday0, thismonday0);
     
     var lastweekdata = list.splice(0, last + 1);
+    
+    RemoveAllCharts();
+    
     sheet.deleteRows(2, lastweekdata.length);
     
     
